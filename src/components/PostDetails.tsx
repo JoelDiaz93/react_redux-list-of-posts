@@ -4,11 +4,7 @@ import { NewCommentForm } from './NewCommentForm';
 import { Post } from '../types/Post';
 import { CommentData } from '../types/Comment';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {
-  addComment,
-  deleteComment,
-  loadComments,
-} from '../features/comments';
+import { addComment, deleteComment, loadComments } from '../features/comments';
 
 type Props = {
   post: Post;

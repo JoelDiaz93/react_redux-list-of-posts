@@ -14,20 +14,22 @@ const initialState: CommentsState = {
   items: [],
 };
 
-export const loadComments = createAsyncThunk(
+export const loadComments = createAsyncThunk<Comment[], number>(
   'comments/load',
-  (postId: number) => commentsApi.getPostComments(postId),
+  postId => commentsApi.getPostComments(postId),
 );
 
-export const addComment = createAsyncThunk(
+type NewComment = CommentData & { postId: number };
+
+export const addComment = createAsyncThunk<Comment, NewComment>(
   'comments/add',
-  ({ postId, name, email, body }: CommentData & { postId: number }) =>
+  ({ postId, name, email, body }) =>
     commentsApi.createComment({ postId, name, email, body }),
 );
 
-export const deleteComment = createAsyncThunk(
+export const deleteComment = createAsyncThunk<unknown, number>(
   'comments/delete',
-  (commentId: number) => commentsApi.deleteComment(commentId),
+  commentId => commentsApi.deleteComment(commentId),
 );
 
 const commentsSlice = createSlice({
@@ -62,7 +64,12 @@ const commentsSlice = createSlice({
       }))
       .addCase(deleteComment.pending, (state, action) => ({
         ...state,
+        hasError: false,
         items: state.items.filter(comment => comment.id !== action.meta.arg),
+      }))
+      .addCase(deleteComment.rejected, state => ({
+        ...state,
+        hasError: true,
       }));
   },
 });

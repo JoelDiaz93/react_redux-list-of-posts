@@ -23,7 +23,7 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    clearPosts: () => initialState,
+    clearPosts: () => ({ ...initialState }),
   },
   extraReducers: builder => {
     builder
